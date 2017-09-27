@@ -37,9 +37,24 @@ function writeFile() {
   #$3 is the second line
   #$4 is the third line
   rm $1
+  touch $1
   echo $2 >> $1
   echo $3 >> $1
   echo $4 >> $1
+}
+
+function makeChangesInBranch() {
+  #$1 is the file name
+  #$2 is the first line
+  #$3 is the second line
+  #$4 is the third line
+  #$5 is the branch name
+  
+  git checkout $5
+  writeFile $1 $2 $3 $4
+  git add -A
+  git commit -m "changes"
+  git push origin $5
 }
 
 #This is the start of the script
@@ -59,9 +74,15 @@ git checkout v2
 #Make a file and put some stuff in it
 git checkout master
 echo "##making a new file"
-writeFile file1 "stuff" "more stuff" "[1,2,3]"
+writeFile file1 "stuff" "more-stuff" "[1,2,3]"
 git add -A
 git commit -m "added some stuff to file1"
 git push -f origin master
 remakeBranch v1
 remakeBranch v2
+
+#Put some changes in v1
+makeChangesInBranch file1 "stuff-and-a-thing." "more-stuff" "[1,2,3,4]" v1
+
+#Put some changes in v2
+makeChangesInBranch file1 "stuff" "less-stuff" "[1,2]" v2
