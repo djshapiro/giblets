@@ -20,7 +20,9 @@ function restartHistory() {
 function remakeBranch () {
   echo "##remaking branch"
   git checkout master
-  git checkout --orphan newbranch
+  git checkout -b newbranch
+  git add -A
+  git commit -am "start from master"
   git branch -D $1
   git branch -m $1
   git push -f origin $1
