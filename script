@@ -1,27 +1,43 @@
 #!/bin/bash
 
 function restartHistory() {
+  #This function takes a branch name and obliterates it
   git checkout $1
-  git checkout --orphan newmaster
+  git checkout --orphan newbranch
   git add -A
   git commit -am "start over"
-  git branch -D master
-  git branch -m master
-  git push -f origin master
+  git branch -D $1
+  git branch -m $1
+  git push -f origin $1
 
   rm *
   git add -A
   git commit -m "blank files"
-  git push -f origin master
+  git push -f origin $1
 }
 
+function remakeBranch () {
+  git checkout master
+  git checkout --orphan newbranch
+  git branch -D $1
+  git branch -m $1
+  git push -f origin $1
+}
+
+#This is the start of the script
+#delete the old local version and obliterate it
 rm -rf gittester
 git clone https://github.com/djshapiro/gittester.git
 cd gittester
 restartHistory master
-touch file1
-git add .
-git commit -m "create empty file"
-git push -u origin master
 
-echo "eat" > file1
+#Make a file and put some stuff in it
+touch file1
+echo "stuff" >> file1
+echo "more stuff" >> file1
+echo "[1,2,3]" >> file1
+git add -A
+git commit -m "added some stuff to file1"
+git push -f origin master
+remakeBranch v1
+remakeBranch v2
