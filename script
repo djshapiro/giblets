@@ -1,7 +1,8 @@
 #!/bin/bash
 
 function restartHistory() {
-  #This function takes a branch name and obliterates it
+  #This function obliterates a branch
+  #$1 is the name of the branch to obliterate
   echo "##restarting history"
   git checkout $1
   git checkout --orphan newbranch
@@ -18,6 +19,8 @@ function restartHistory() {
 }
 
 function remakeBranch () {
+  #This function resets a branch to master's current history
+  #$1 is the name of the branch to reset
   echo "##remaking branch"
   git checkout master
   git checkout -b newbranch
