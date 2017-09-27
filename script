@@ -31,6 +31,17 @@ function remakeBranch () {
   git push -f origin $1
 }
 
+function writeFile() {
+  #$1 is the file name
+  #$2 is the first line
+  #$3 is the second line
+  #$4 is the third line
+  rm $1
+  echo $2 >> $1
+  echo $3 >> $1
+  echo $4 >> $1
+}
+
 #This is the start of the script
 #delete the old local version and obliterate it
 echo "##starting script"
@@ -38,18 +49,17 @@ rm -rf gittester
 git clone https://github.com/djshapiro/gittester.git
 cd gittester
 restartHistory master
+
+#pull remote versions of the two branches
 git fetch origin v1
 git checkout v1
 git fetch origin v2
 git checkout v2
-git checkout master
 
 #Make a file and put some stuff in it
+git checkout master
 echo "##making a new file"
-touch file1
-echo "stuff" >> file1
-echo "more stuff" >> file1
-echo "[1,2,3]" >> file1
+writeFile file1 "stuff" "more stuff" "[1,2,3]"
 git add -A
 git commit -m "added some stuff to file1"
 git push -f origin master
