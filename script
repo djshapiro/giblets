@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function restartHistory() {
+  rm file1
+  git checkout $1
+  git checkout --orphan newmaster
+  git add -A
+  git commit -am "start over"
+  git branch -D master
+  git branch -m master
+  git push -f origin master
+}
+
+rm -rf gittester
+git clone https://github.com/djshapiro/gittester.git
+git touch file1
+git add .
+git commit -m "create empty file"
+git push -u origin master
+restartHistory master
+
+echo "eat" > file1
