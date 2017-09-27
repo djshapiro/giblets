@@ -13,6 +13,7 @@ function restartHistory() {
 
 rm -rf gittester
 git clone https://github.com/djshapiro/gittester.git
+cd gittester
 git touch file1
 git add .
 git commit -m "create empty file"
