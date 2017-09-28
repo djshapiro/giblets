@@ -32,6 +32,7 @@ function remakeBranch () {
 }
 
 function writeFile() {
+  #This function writes some text to a file
   #$1 is the file name
   #$2 is the first line
   #$3 is the second line
@@ -44,6 +45,7 @@ function writeFile() {
 }
 
 function makeChangesInBranch() {
+  #This function makes changes to a file and then commits those changes to the correct branch
   #$1 is the file name
   #$2 is the first line
   #$3 is the second line
@@ -86,3 +88,15 @@ makeChangesInBranch file1 "stuff-and-a-thing." "more-stuff" "[1,2,3,4]" v1
 
 #Put some changes in v2
 makeChangesInBranch file1 "stuff" "less-stuff" "[1,2]" v2
+
+#merge them together. This represents the "bad" merge; we merge v2 into v1.
+git checkout v1
+git merge v2
+makeChangesInBranch file1 "stuff" "less-stuff" "[1,2]" v1
+
+#now make more changes in v1
+makeChangesInBranch file1 "stuff" "less-stuff" "[1,2,3]" v1
+
+#and let's try a correct merge (v1 into v2)
+git checkout v2
+git merge v1
